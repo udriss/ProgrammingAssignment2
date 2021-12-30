@@ -8,13 +8,30 @@
 # 3. set the value of the inverse
 # 4. get the value of the inverse
 
-makeCacheMatrix <- function(the_matrix = matrix(1:4,ncol=2,nrow=2)) {
+makeCacheMatrix <- function(new_matrix = matrix(1:4,ncol=2,nrow=2)) {
   inverse <- NULL
-  set <- function(y) {
-    message("The default matrix is erased and replaced by the given one")
-    the_matrix <<- y
+  
+  set <- function(new_matrix) {
+    message("The default matrix is erased and replaced by the given one.")
+    the_matrix <<- new_matrix
     inverse <<- NULL
   }
+  
+  if(dim(new_matrix)[1] == 2) {
+    if(new_matrix==matrix(1:4,ncol=2,nrow=2)){#Do nothing }
+  }}
+  else {# Set new matrix
+    set(new_matrix)
+  }
+  
+  if(!is.null(inverse)){
+    message("Inverse is cached : ")
+    inverse
+  }
+  else{
+    message("No cached inverse for the matrix")
+  }
+  
   get <- function() the_matrix
   setinverse <- function(givin_inverse) inverse <<- givin_inverse
   getinverse <- function() inverse
@@ -41,7 +58,7 @@ cacheSolve <- function(the_matrix, ...) {
   matrix_to_inverse<-the_matrix$get()
   print(matrix_to_inverse)
   if (det(matrix_to_inverse)!=0) {
-    message("The inverse of the matrix must be calculated (no cach) ... ")
+    message("The inverse of the matrix must be calculated (no cache) ... ")
     inverse<-solve(matrix_to_inverse)
     the_matrix$setinverse(inverse)
     message("The inverse is :")
