@@ -8,23 +8,44 @@
 # 3. set the value of the inverse
 # 4. get the value of the inverse
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(the_matrix = matrix(1:4,ncol=2,nrow=2)) {
   inverse <- NULL
   set <- function(y) {
-    x <<- y
+    message("The default matrix is erased and replaced by the given one")
+    the_matrix <<- y
     inverse <<- NULL
   }
-  get <- function() x
-  setinverse <- function(inverse) inverse <<- inverse
+  get <- function() the_matrix
+  setinverse <- function(givin_inverse) inverse <<- givin_inverse
   getinverse <- function() inverse
-  list(set = set, get = get,
-       setinverse = setinverse,
-       getinverse = getinverse)
+  
+  list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)
 }
 
 
-## Write a short comment describing this function
+# This function computes the inverse of the special "matrix" returned by makeCacheMatrix above.
+# If the inverse has already been calculated (and the matrix has not changed), then
+# the cacheSolve should retrieve the inverse from the cache.
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheSolve <- function(the_matrix, ...) {
+  
+  inverse <- the_matrix$getinverse()
+  
+  # cacheSolve should retrieve the inverse from the cache.
+  if(!is.null(inverse)){
+    message("Here the caching inverse of the matrix :")
+    return(inverse)
+  }
+  
+  # Return a matrix that is the inverse of 'x'
+  matrix_to_inverse<-the_matrix$get()
+  print(matrix_to_inverse)
+  if (det(matrix_to_inverse)!=0) {
+    message("The inverse of the matrix must be calculated (no cach) ... ")
+    inverse<-solve(matrix_to_inverse)
+    the_matrix$setinverse(inverse)
+    message("The inverse is :")
+    inverse
+  }
+  else(message("This matrix is ot inversible, the determinant is zero"))
 }
